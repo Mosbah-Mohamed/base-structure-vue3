@@ -21,6 +21,18 @@ const value = computed({
   get: () => Boolean(props.modelValue),
   set: (newValue: boolean) => emit('update:modelValue', newValue),
 })
+
+function onCheckedChange(checked: boolean | 'indeterminate', handleChange: (v: boolean) => void) {
+  const next = !!checked
+  value.value = next
+  handleChange(next)
+}
+
+function onLabelClick(handleChange: (v: boolean) => void) {
+  const next = !value.value
+  value.value = next
+  handleChange(next)
+}
 </script>
 
 <template>
@@ -35,20 +47,9 @@ const value = computed({
       <div v-if="label && !hideDefaultLabel && !hideLabel" class="flex items-center gap-3">
         <Switch
           :model-value="value"
-          @update:model-value="
-            (checked) => {
-              value = !!checked
-              handleChange(!!checked)
-            }
-          "
+          @update:model-value="(checked) => onCheckedChange(checked, handleChange)"
         />
-        <Label
-          class="cursor-pointer"
-          @click="
-            value = !value
-            handleChange(value)
-          "
-        >
+        <Label class="cursor-pointer" @click="onLabelClick(handleChange)">
           {{ label }}
           <span v-if="isRequired" class="text-destructive">*</span>
         </Label>
@@ -56,12 +57,7 @@ const value = computed({
       <Switch
         v-else
         :model-value="value"
-        @update:model-value="
-          (checked) => {
-            value = !!checked
-            handleChange(!!checked)
-          }
-        "
+        @update:model-value="(checked) => onCheckedChange(checked, handleChange)"
       />
       <p v-if="errorMessage" class="text-xs text-destructive">{{ errorMessage }}</p>
     </div>

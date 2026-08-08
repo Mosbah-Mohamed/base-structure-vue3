@@ -11,7 +11,6 @@ import {
   type DemoFilters,
 } from '../constants/demoCrud'
 import { useDeleteDemoItemMutation, useDemoItemsQuery } from '../composables/useDemoCrud'
-import { reorderDemoItems, resetDemoItems } from '../services/demoCrudStore'
 import { demoCrudService } from '../services/DemoCrudService'
 import DemoItemFormModal from '../modals/DemoItemFormModal.vue'
 import DemoCrudFilter from '../components/DemoCrudFilter.vue'
@@ -91,7 +90,7 @@ function removeFilterChip(key: string) {
 
 function onReorder(items: DemoItem[]) {
   tableItems.value = items
-  reorderDemoItems(items.map((item) => item.id))
+  demoCrudService.reorderItems(items.map((item) => item.id))
   toast.success(t('messages.reordered'))
 }
 
@@ -102,7 +101,7 @@ function deleteItem(item: DemoItem) {
 }
 
 function resetSeedData() {
-  resetDemoItems()
+  demoCrudService.resetItems()
   params.page = 1
   params.keyword = ''
   Object.assign(params, EMPTY_DEMO_FILTERS)
