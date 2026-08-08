@@ -27,7 +27,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
 import { sharedService } from '@/services/SharedService'
 import { isHandledApiError } from '@/lib/apiError'
 import { cn } from '@/lib/utils'
@@ -178,24 +182,25 @@ async function runBulk(operation: 'delete' | 'activate' | 'deactivate') {
       v-model:open="toolsOpen"
       class="overflow-hidden rounded-xl border bg-card shadow-sm"
     >
-      <div class="flex flex-wrap items-center gap-2 px-3 py-2">
+      <!-- Always-visible bar: title + primary actions -->
+      <div class="flex items-center gap-2 px-3 py-2.5">
         <CollapsibleTrigger as-child>
           <Button
             variant="ghost"
             size="sm"
-            class="gap-2 px-2"
+            class="h-8 gap-2 px-2 text-muted-foreground hover:text-foreground"
             :title="toolsOpen ? t('actions.collapseTools') : t('actions.expandTools')"
           >
-            <Wrench class="size-4 text-muted-foreground" />
-            <span class="text-sm font-medium">{{ t('actions.tableTools') }}</span>
+            <Wrench class="size-4" />
+            <span class="text-sm font-medium text-foreground">{{ t('actions.tableTools') }}</span>
             <ChevronDown
-              class="size-4 text-muted-foreground transition-transform duration-200"
+              class="size-4 transition-transform duration-200"
               :class="toolsOpen && 'rotate-180'"
             />
           </Button>
         </CollapsibleTrigger>
 
-        <div class="ms-auto flex flex-wrap items-center gap-2">
+        <div class="ms-auto flex shrink-0 items-center gap-2">
           <Button
             v-if="showFilter"
             variant="outline"
@@ -213,101 +218,105 @@ async function runBulk(operation: 'delete' | 'activate' | 'deactivate') {
             v-for="(action, index) in primaryActions"
             :key="`primary-${index}`"
             size="sm"
-            class="gap-2"
+            class="h-8 gap-1.5"
             @click="action.handler?.()"
           >
             <Plus class="size-4" />
-            <span v-if="action.label" class="truncate">{{ action.label }}</span>
+            <span v-if="action.label">{{ action.label }}</span>
           </Button>
         </div>
       </div>
 
+      <!-- Expanded tools: stacked search + compact control row -->
       <CollapsibleContent>
-        <div class="space-y-3 border-t bg-muted/20 px-3 py-3">
-          <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
-            <div v-if="showSearch" class="flex w-full min-w-0 flex-1 gap-2 sm:min-w-[200px]">
-              <div class="relative min-w-0 flex-1">
-                <Search class="absolute start-2.5 top-2.5 size-4 text-muted-foreground" />
-                <Input
-                  v-model="searchText"
-                  class="ps-9"
-                  :placeholder="t('actions.search')"
-                  @keyup.enter="applySearchNow"
-                />
-              </div>
-            </div>
+        <div class="space-y-3 border-t px-3 py-3">
+          <div v-if="showSearch" class="relative">
+            <Search class="absolute start-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              v-model="searchText"
+              class="h-9 ps-9"
+              :placeholder="t('actions.search')"
+              @keyup.enter="applySearchNow"
+            />
+          </div>
 
-            <div class="flex flex-wrap items-center gap-2">
-              <Select
-                :model-value="String(itemsPerPage)"
-                @update:model-value="onItemsPerPageChange"
-              >
-                <SelectTrigger class="w-[88px]" :title="t('actions.perPage')">
-                  <SelectValue :placeholder="String(itemsPerPage)" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem
-                    v-for="option in perPageOptions"
-                    :key="option"
-                    :value="String(option)"
-                  >
-                    {{ option }}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+          <div class="flex flex-wrap items-center gap-2">
+            <Select
+              :model-value="String(itemsPerPage)"
+              @update:model-value="onItemsPerPageChange"
+            >
+              <SelectTrigger class="h-8 w-[4.5rem]" :title="t('actions.perPage')">
+                <SelectValue :placeholder="String(itemsPerPage)" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem
+                  v-for="option in perPageOptions"
+                  :key="option"
+                  :value="String(option)"
+                >
+                  {{ option }}
+                </SelectItem>
+              </SelectContent>
+            </Select>
 
-              <Button
-                variant="outline"
-                size="icon"
-                :title="t('actions.reload')"
-                @click="emit('reloadData')"
-              >
-                <RefreshCw class="size-4" />
-              </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              class="size-8"
+              :title="t('actions.reload')"
+              @click="emit('reloadData')"
+            >
+              <RefreshCw class="size-4" />
+            </Button>
 
-              <Button
-                v-if="showViewToggle"
-                variant="outline"
-                size="icon"
-                :title="viewMode === 'table' ? t('actions.cardsView') : t('actions.tableView')"
-                :class="cn(viewMode === 'cards' && 'border-primary text-primary')"
-                @click="toggleViewMode"
-              >
-                <LayoutGrid v-if="viewMode === 'table'" class="size-4" />
-                <Table2 v-else class="size-4" />
-              </Button>
+            <Button
+              v-if="showViewToggle"
+              variant="outline"
+              size="icon"
+              class="size-8"
+              :title="viewMode === 'table' ? t('actions.cardsView') : t('actions.tableView')"
+              :class="cn(viewMode === 'cards' && 'border-primary text-primary')"
+              @click="toggleViewMode"
+            >
+              <LayoutGrid v-if="viewMode === 'table'" class="size-4" />
+              <Table2 v-else class="size-4" />
+            </Button>
 
-              <Select
-                v-if="showViewToggle && viewMode === 'cards'"
-                :model-value="String(cardsColumns)"
-                @update:model-value="onCardsColumnsChange"
-              >
-                <SelectTrigger class="w-[108px]" :title="t('actions.cardsColumns')">
-                  <Columns3 class="me-1.5 size-3.5 shrink-0 text-muted-foreground" />
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem
-                    v-for="option in cardsColumnOptions"
-                    :key="option"
-                    :value="String(option)"
-                  >
-                    {{ t('actions.cardsColumnsCount', { count: option }) }}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+            <Select
+              v-if="showViewToggle && viewMode === 'cards'"
+              :model-value="String(cardsColumns)"
+              @update:model-value="onCardsColumnsChange"
+            >
+              <SelectTrigger class="h-8 w-[7.5rem]" :title="t('actions.cardsColumns')">
+                <Columns3 class="me-1.5 size-3.5 shrink-0 text-muted-foreground" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem
+                  v-for="option in cardsColumnOptions"
+                  :key="option"
+                  :value="String(option)"
+                >
+                  {{ t('actions.cardsColumnsCount', { count: option }) }}
+                </SelectItem>
+              </SelectContent>
+            </Select>
 
+            <div
+              v-if="secondaryActions.length"
+              class="ms-auto flex flex-wrap items-center gap-2"
+            >
               <Button
                 v-for="(action, index) in secondaryActions"
                 :key="`secondary-${index}`"
                 variant="outline"
-                :size="action.label ? 'default' : 'icon'"
-                class="gap-2"
+                size="sm"
+                class="h-8 gap-1.5"
                 @click="action.handler?.()"
               >
                 <Filter v-if="action.icon === 'filter'" class="size-4" />
                 <X v-else-if="action.icon === 'reset'" class="size-4" />
-                <span v-if="action.label" class="truncate">{{ action.label }}</span>
+                <span v-if="action.label">{{ action.label }}</span>
               </Button>
             </div>
           </div>
@@ -315,143 +324,158 @@ async function runBulk(operation: 'delete' | 'activate' | 'deactivate') {
       </CollapsibleContent>
     </Collapsible>
 
-    <!-- Non-collapsible fallback -->
-    <div v-else class="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
-      <div v-if="showSearch" class="flex w-full min-w-0 flex-1 gap-2 sm:min-w-[200px]">
-        <div class="relative min-w-0 flex-1">
-          <Search class="absolute start-2.5 top-2.5 size-4 text-muted-foreground" />
+    <!-- Flat toolbar (no collapse) -->
+    <div
+      v-else
+      class="space-y-3 rounded-xl border bg-card p-3 shadow-sm"
+    >
+      <div class="flex flex-wrap items-center gap-2">
+        <div v-if="showSearch" class="relative min-w-[12rem] flex-1">
+          <Search class="absolute start-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             v-model="searchText"
-            class="ps-9"
+            class="h-9 ps-9"
             :placeholder="t('actions.search')"
             @keyup.enter="applySearchNow"
           />
         </div>
-      </div>
 
-      <div class="flex flex-wrap items-center gap-2">
-        <Select :model-value="String(itemsPerPage)" @update:model-value="onItemsPerPageChange">
-          <SelectTrigger class="w-[88px]" :title="t('actions.perPage')">
-            <SelectValue :placeholder="String(itemsPerPage)" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem v-for="option in perPageOptions" :key="option" :value="String(option)">
-              {{ option }}
-            </SelectItem>
-          </SelectContent>
-        </Select>
+        <div class="flex flex-wrap items-center gap-2">
+          <Select
+            :model-value="String(itemsPerPage)"
+            @update:model-value="onItemsPerPageChange"
+          >
+            <SelectTrigger class="h-8 w-[4.5rem]" :title="t('actions.perPage')">
+              <SelectValue :placeholder="String(itemsPerPage)" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem
+                v-for="option in perPageOptions"
+                :key="option"
+                :value="String(option)"
+              >
+                {{ option }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
 
-        <Button
-          variant="outline"
-          size="icon"
-          :title="t('actions.reload')"
-          @click="emit('reloadData')"
-        >
-          <RefreshCw class="size-4" />
-        </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            class="size-8"
+            :title="t('actions.reload')"
+            @click="emit('reloadData')"
+          >
+            <RefreshCw class="size-4" />
+          </Button>
 
-        <Button
-          v-if="showViewToggle"
-          variant="outline"
-          size="icon"
-          :title="viewMode === 'table' ? t('actions.cardsView') : t('actions.tableView')"
-          :class="cn(viewMode === 'cards' && 'border-primary text-primary')"
-          @click="toggleViewMode"
-        >
-          <LayoutGrid v-if="viewMode === 'table'" class="size-4" />
-          <Table2 v-else class="size-4" />
-        </Button>
+          <Button
+            v-if="showViewToggle"
+            variant="outline"
+            size="icon"
+            class="size-8"
+            :title="viewMode === 'table' ? t('actions.cardsView') : t('actions.tableView')"
+            :class="cn(viewMode === 'cards' && 'border-primary text-primary')"
+            @click="toggleViewMode"
+          >
+            <LayoutGrid v-if="viewMode === 'table'" class="size-4" />
+            <Table2 v-else class="size-4" />
+          </Button>
 
-        <Select
-          v-if="showViewToggle && viewMode === 'cards'"
-          :model-value="String(cardsColumns)"
-          @update:model-value="onCardsColumnsChange"
-        >
-          <SelectTrigger class="w-[108px]" :title="t('actions.cardsColumns')">
-            <Columns3 class="me-1.5 size-3.5 shrink-0 text-muted-foreground" />
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem v-for="option in cardsColumnOptions" :key="option" :value="String(option)">
-              {{ t('actions.cardsColumnsCount', { count: option }) }}
-            </SelectItem>
-          </SelectContent>
-        </Select>
+          <Select
+            v-if="showViewToggle && viewMode === 'cards'"
+            :model-value="String(cardsColumns)"
+            @update:model-value="onCardsColumnsChange"
+          >
+            <SelectTrigger class="h-8 w-[7.5rem]" :title="t('actions.cardsColumns')">
+              <Columns3 class="me-1.5 size-3.5 shrink-0 text-muted-foreground" />
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem
+                v-for="option in cardsColumnOptions"
+                :key="option"
+                :value="String(option)"
+              >
+                {{ t('actions.cardsColumnsCount', { count: option }) }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
 
-        <Button
-          v-if="showFilter"
-          variant="outline"
-          size="icon"
-          :title="t('actions.filter')"
-          :class="cn(filterActive && 'border-primary text-primary')"
-          @click="emit('openFilter')"
-        >
-          <FilterX v-if="filterActive" class="size-4" />
-          <Filter v-else class="size-4" />
-        </Button>
+          <Button
+            v-if="showFilter"
+            variant="outline"
+            size="icon"
+            class="size-8"
+            :title="t('actions.filter')"
+            :class="cn(filterActive && 'border-primary text-primary')"
+            @click="emit('openFilter')"
+          >
+            <FilterX v-if="filterActive" class="size-4" />
+            <Filter v-else class="size-4" />
+          </Button>
 
-        <Button
-          v-for="(action, index) in visibleActions"
-          :key="index"
-          :variant="action.icon === 'reset' || action.icon === 'filter' ? 'outline' : 'default'"
-          :size="action.label ? 'default' : 'icon'"
-          class="gap-2"
-          @click="action.handler?.()"
-        >
-          <Filter v-if="action.icon === 'filter'" class="size-4" />
-          <Plus v-else-if="!action.icon || action.icon === 'create'" class="size-4" />
-          <X v-else-if="action.icon === 'reset'" class="size-4" />
-          <span v-if="action.label" class="truncate">{{ action.label }}</span>
-        </Button>
+          <Button
+            v-for="(action, index) in visibleActions"
+            :key="index"
+            :variant="action.icon === 'reset' || action.icon === 'filter' ? 'outline' : 'default'"
+            size="sm"
+            class="h-8 gap-1.5"
+            @click="action.handler?.()"
+          >
+            <Filter v-if="action.icon === 'filter'" class="size-4" />
+            <Plus v-else-if="!action.icon || action.icon === 'create'" class="size-4" />
+            <X v-else-if="action.icon === 'reset'" class="size-4" />
+            <span v-if="action.label">{{ action.label }}</span>
+          </Button>
+        </div>
       </div>
     </div>
 
     <Transition name="app-fade">
       <div
         v-if="hasBulkSelection"
-        class="flex flex-col gap-2 rounded-xl border bg-muted/40 px-3 py-2 sm:flex-row sm:flex-wrap sm:items-center"
+        class="flex flex-wrap items-center gap-2 rounded-xl border bg-muted/40 px-3 py-2"
       >
-        <span class="text-sm text-muted-foreground sm:me-auto">
+        <span class="me-auto text-sm text-muted-foreground">
           {{ t('actions.selectedCount', { count: selectedItems.length }) }}
         </span>
 
-        <div class="flex flex-wrap gap-2">
-          <Button
-            v-if="showMultiActivate"
-            variant="outline"
-            size="sm"
-            class="gap-2"
-            :disabled="isBusy"
-            @click="runBulk('activate')"
-          >
-            <CheckSquare class="size-4" />
-            {{ t('actions.activateSelected') }}
-          </Button>
+        <Button
+          v-if="showMultiActivate"
+          variant="outline"
+          size="sm"
+          class="h-8 gap-1.5"
+          :disabled="isBusy"
+          @click="runBulk('activate')"
+        >
+          <CheckSquare class="size-4" />
+          {{ t('actions.activateSelected') }}
+        </Button>
 
-          <Button
-            v-if="showMultiActivate"
-            variant="outline"
-            size="sm"
-            class="gap-2"
-            :disabled="isBusy"
-            @click="runBulk('deactivate')"
-          >
-            <Ban class="size-4" />
-            {{ t('actions.deactivateSelected') }}
-          </Button>
+        <Button
+          v-if="showMultiActivate"
+          variant="outline"
+          size="sm"
+          class="h-8 gap-1.5"
+          :disabled="isBusy"
+          @click="runBulk('deactivate')"
+        >
+          <Ban class="size-4" />
+          {{ t('actions.deactivateSelected') }}
+        </Button>
 
-          <Button
-            v-if="showMultiDelete"
-            variant="destructive"
-            size="sm"
-            class="gap-2"
-            :disabled="isBusy"
-            @click="runBulk('delete')"
-          >
-            <Trash2 class="size-4" />
-            {{ t('actions.deleteSelected') }}
-          </Button>
-        </div>
+        <Button
+          v-if="showMultiDelete"
+          variant="destructive"
+          size="sm"
+          class="h-8 gap-1.5"
+          :disabled="isBusy"
+          @click="runBulk('delete')"
+        >
+          <Trash2 class="size-4" />
+          {{ t('actions.deleteSelected') }}
+        </Button>
       </div>
     </Transition>
   </div>
