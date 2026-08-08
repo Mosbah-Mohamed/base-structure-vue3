@@ -1,0 +1,158 @@
+{
+  "actions": {
+    "cancel": "إلغاء",
+    "create": "إنشاء",
+    "edit": "تعديل",
+    "save": "حفظ",
+    "delete": "حذف",
+    "search": "بحث",
+    "confirmDelete": "تأكيد الحذف",
+    "retry": "إعادة المحاولة",
+    "reload": "تحديث",
+    "filter": "التصفية",
+    "filterResults": "تصفية النتائج",
+    "applyFilter": "تطبيق",
+    "resetFilter": "إعادة تعيين",
+    "tableView": "عرض جدول",
+    "cardsView": "عرض بطاقات",
+    "drag": "اسحب لإعادة الترتيب",
+    "selectedCount": "{count} محدد",
+    "activateSelected": "تفعيل المحدد",
+    "deactivateSelected": "إلغاء تفعيل المحدد",
+    "deleteSelected": "حذف المحدد",
+    "activeFilters": "التصفية النشطة",
+    "removeFilter": "إزالة التصفية",
+    "clearFilters": "مسح التصفية",
+    "perPage": "عدد الصفوف",
+    "cardsColumns": "عدد البطاقات في الصف",
+    "cardsColumnsCount": "{count} / صف",
+    "tableTools": "أدوات الجدول",
+    "expandTools": "توسيع الأدوات",
+    "collapseTools": "طي الأدوات"
+  },
+  "fields": {
+    "nameAr": "الاسم عربي",
+    "nameEn": "الاسم إنجليزي",
+    "type": "النوع",
+    "color": "اللون",
+    "status": "الحالة",
+    "createdAt": "تاريخ الإنشاء",
+    "actions": "العمليات",
+    "email": "البريد الإلكتروني",
+    "description": "الوصف",
+    "priority": "الأولوية"
+  },
+  "messages": {
+    "saved": "تم الحفظ بنجاح",
+    "deleted": "تم الحذف بنجاح",
+    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟",
+    "noData": "لا توجد بيانات",
+    "loginFailed": "فشل تسجيل الدخول",
+    "saveFailed": "فشل الحفظ",
+    "deleteFailed": "فشل الحذف",
+    "loadFailed": "فشل تحميل البيانات",
+    "reordered": "تم تحديث الترتيب",
+    "bulkDeleteConfirm": "هل أنت متأكد من حذف العناصر المحددة؟",
+    "bulkActivateConfirm": "هل أنت متأكد من تفعيل العناصر المحددة؟",
+    "bulkDeactivateConfirm": "هل أنت متأكد من إلغاء تفعيل العناصر المحددة؟",
+    "bulkFailed": "فشلت العملية الجماعية",
+    "bulkServiceMissing": "خدمة العمليات الجماعية غير مضبوطة",
+    "unauthorized": "غير مصرح",
+    "serverError": "حدث خطأ ما. حاول مرة أخرى لاحقاً.",
+    "networkError": "خطأ في الشبكة. تحقق من اتصالك."
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "email": "يجب أن يكون بريداً إلكترونياً صالحاً",
+    "url": "يجب أن يكون رابطاً صالحاً",
+    "invalid": "قيمة غير صالحة",
+    "min": "يجب ألا يقل عن {min} حرفاً",
+    "max": "يجب ألا يزيد عن {max} حرفاً",
+    "minValue": "يجب ألا يقل عن {min}",
+    "maxValue": "يجب ألا يزيد عن {max}"
+  },
+  "participantCategories": {
+    "types": {
+      "highlight": "تمييز",
+      "block": "حظر",
+      "ban": "حظر",
+      "general": "عام"
+    }
+  },
+  "modules": {
+    "participantCategories": "تصنيفات المشاركين",
+    "demoCrud": "تجربة CRUD كاملة"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "demoCrud": "تجربة CRUD",
+    "participantCategories": "تصنيفات المشاركين",
+    "menu": "القائمة",
+    "customizeTitle": "تخصيص القائمة الجانبية",
+    "customizeHint": "اسحب لإعادة الترتيب. العين للإخفاء والنجمة للمفضلة.",
+    "restoreDefault": "استعادة الوضع الافتراضي",
+    "done": "تم",
+    "showItem": "إظهار العنصر",
+    "hideItem": "إخفاء العنصر",
+    "favorite": "مفضلة",
+    "collapseSidebar": "طي القائمة الجانبية",
+    "expandSidebar": "فتح القائمة الجانبية",
+    "notifications": "الإشعارات",
+    "markAllRead": "تعيين الكل كمقروء",
+    "noNotifications": "لا توجد إشعارات",
+    "viewAllNotifications": "عرض الكل",
+    "starterPackage": "باقة البداية",
+    "myProjectRoles": "أدواري في المشاريع",
+    "exampleProject": "مشروع تجريبي",
+    "projectOwner": "مالك المشروع",
+    "techSupport": "الدعم الفني",
+    "adminPanel": "لوحة أدمن المنصة",
+    "demoNotification1Title": "تم إنشاء عنصر جديد",
+    "demoNotification1Body": "تمت إضافة العنصر التجريبي 12 إلى القائمة.",
+    "demoNotification2Title": "اكتمل التحديث الجماعي",
+    "demoNotification2Body": "تم تفعيل 3 عناصر بنجاح.",
+    "demoNotification3Title": "مرحباً",
+    "demoNotification3Body": "مساحة العمل التجريبية جاهزة."
+  },
+  "demoCrud": {
+    "subtitle": "CRUD عام مع حركات، درج التصفية، تبديل جدول/بطاقات، وسحب الصفوف.",
+    "resetData": "إعادة البيانات",
+    "resetDone": "تمت إعادة بيانات التجربة",
+    "priority": {
+      "all": "كل الأولويات",
+      "low": "منخفضة",
+      "medium": "متوسطة",
+      "high": "عالية"
+    },
+    "status": {
+      "all": "كل الحالات"
+    }
+  },
+  "pagination": {
+    "prev": "السابق",
+    "next": "التالي",
+    "pageOf": "صفحة {current} من {total}"
+  },
+  "status": {
+    "active": "نشط",
+    "inactive": "غير نشط"
+  },
+  "auth": {
+    "welcome": "مرحباً",
+    "loginSubtitle": "الرجاء تسجيل الدخول",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "login": "تسجيل الدخول",
+    "loggingIn": "جاري الدخول...",
+    "logout": "تسجيل الخروج",
+    "logoutDone": "تم تسجيل الخروج",
+    "demoLogin": "المتابعة كمستخدم تجريبي",
+    "demoLoginHint": "بدون باكند — يفتح تجربة CRUD الكاملة"
+  },
+  "home": {
+    "title": "مرحباً",
+    "description": "مشروع أساسي حديث: shadcn-vue + Vue Query + axios + Pinia",
+    "loggedInAs": "مسجل الدخول: {name} ({email})",
+    "openDemo": "فتح تجربة CRUD الكاملة"
+  }
+}

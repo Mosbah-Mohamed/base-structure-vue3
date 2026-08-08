@@ -1,0 +1,158 @@
+{
+  "actions": {
+    "cancel": "Cancel",
+    "create": "Create",
+    "edit": "Edit",
+    "save": "Save",
+    "delete": "Delete",
+    "search": "Search",
+    "confirmDelete": "Confirm delete",
+    "retry": "Retry",
+    "reload": "Reload",
+    "filter": "Filters",
+    "filterResults": "Filter results",
+    "applyFilter": "Apply",
+    "resetFilter": "Reset",
+    "tableView": "Table view",
+    "cardsView": "Cards view",
+    "drag": "Drag to reorder",
+    "selectedCount": "{count} selected",
+    "activateSelected": "Activate selected",
+    "deactivateSelected": "Deactivate selected",
+    "deleteSelected": "Delete selected",
+    "activeFilters": "Active filters",
+    "removeFilter": "Remove filter",
+    "clearFilters": "Clear filters",
+    "perPage": "Rows per page",
+    "cardsColumns": "Cards per row",
+    "cardsColumnsCount": "{count} / row",
+    "tableTools": "Table tools",
+    "expandTools": "Expand tools",
+    "collapseTools": "Collapse tools"
+  },
+  "fields": {
+    "nameAr": "Arabic name",
+    "nameEn": "English name",
+    "type": "Type",
+    "color": "Color",
+    "status": "Status",
+    "createdAt": "Created at",
+    "actions": "Actions",
+    "email": "Email",
+    "description": "Description",
+    "priority": "Priority"
+  },
+  "messages": {
+    "saved": "Saved successfully",
+    "deleted": "Deleted successfully",
+    "deleteConfirm": "Are you sure you want to delete this item?",
+    "noData": "No data found",
+    "loginFailed": "Login failed",
+    "saveFailed": "Save failed",
+    "deleteFailed": "Delete failed",
+    "loadFailed": "Failed to load data",
+    "reordered": "Order updated",
+    "bulkDeleteConfirm": "Delete the selected items?",
+    "bulkActivateConfirm": "Activate the selected items?",
+    "bulkDeactivateConfirm": "Deactivate the selected items?",
+    "bulkFailed": "Bulk action failed",
+    "bulkServiceMissing": "Bulk service is not configured",
+    "unauthorized": "Unauthorized",
+    "serverError": "Something went wrong. Try again later.",
+    "networkError": "Network error. Check your connection."
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Must be a valid email",
+    "url": "Must be a valid URL",
+    "invalid": "Invalid value",
+    "min": "Must be at least {min} characters",
+    "max": "Must be at most {max} characters",
+    "minValue": "Must be at least {min}",
+    "maxValue": "Must be at most {max}"
+  },
+  "participantCategories": {
+    "types": {
+      "highlight": "Highlight",
+      "block": "Block",
+      "ban": "Ban",
+      "general": "General"
+    }
+  },
+  "modules": {
+    "participantCategories": "Participant categories",
+    "demoCrud": "Full CRUD demo"
+  },
+  "nav": {
+    "home": "Home",
+    "demoCrud": "CRUD demo",
+    "participantCategories": "Participant categories",
+    "menu": "Menu",
+    "customizeTitle": "Customize sidebar",
+    "customizeHint": "Drag to reorder. Use eye to hide and star for favorites.",
+    "restoreDefault": "Restore default",
+    "done": "Done",
+    "showItem": "Show item",
+    "hideItem": "Hide item",
+    "favorite": "Favorite",
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Expand sidebar",
+    "notifications": "Notifications",
+    "markAllRead": "Mark all read",
+    "noNotifications": "No notifications",
+    "viewAllNotifications": "View all",
+    "starterPackage": "Starter package",
+    "myProjectRoles": "My roles in projects",
+    "exampleProject": "Demo project",
+    "projectOwner": "Project owner",
+    "techSupport": "Technical support",
+    "adminPanel": "Admin panel",
+    "demoNotification1Title": "New item created",
+    "demoNotification1Body": "Demo item 12 was added to the list.",
+    "demoNotification2Title": "Bulk update finished",
+    "demoNotification2Body": "3 items were activated successfully.",
+    "demoNotification3Title": "Welcome",
+    "demoNotification3Body": "Your demo workspace is ready."
+  },
+  "demoCrud": {
+    "subtitle": "Global CRUD kit with animations, filters drawer, table/cards toggle, and draggable rows.",
+    "resetData": "Reset seed",
+    "resetDone": "Demo data reset",
+    "priority": {
+      "all": "All priorities",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "status": {
+      "all": "All statuses"
+    }
+  },
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next",
+    "pageOf": "Page {current} of {total}"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "auth": {
+    "welcome": "Welcome",
+    "loginSubtitle": "Please sign in",
+    "email": "Email",
+    "password": "Password",
+    "login": "Sign in",
+    "loggingIn": "Signing in...",
+    "logout": "Sign out",
+    "logoutDone": "Signed out",
+    "demoLogin": "Continue as demo user",
+    "demoLoginHint": "No backend required — opens the full CRUD demo"
+  },
+  "home": {
+    "title": "Welcome",
+    "description": "Modern base project: shadcn-vue + Vue Query + axios + Pinia",
+    "loggedInAs": "Signed in as {name} ({email})",
+    "openDemo": "Open full CRUD demo"
+  }
+}

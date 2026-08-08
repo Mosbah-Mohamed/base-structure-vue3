@@ -1,0 +1,21 @@
+# GitLab CI — mirrors GitHub Actions validate job
+image: node:20-bookworm
+
+cache:
+  key:
+    files:
+      - yarn.lock
+  paths:
+    - node_modules/
+
+stages:
+  - validate
+
+validate:
+  stage: validate
+  script:
+    - yarn install --frozen-lockfile
+    - yarn validate
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH
