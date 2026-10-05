@@ -7,7 +7,7 @@ const message = route.query.message as string | undefined
 
 <template>
   <div class="flex min-h-svh flex-col items-center justify-center gap-4 p-6 text-center">
-    <h1 class="text-2xl font-bold">حدث خطأ</h1>
+    <h1 class="text-2xl font-bold">حدث خطأ ما</h1>
     <p class="text-muted-foreground">{{ message || 'Something went wrong' }}</p>
     <Button as-child>
       <RouterLink to="/">العودة للرئيسية</RouterLink>
