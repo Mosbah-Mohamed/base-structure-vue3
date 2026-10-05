@@ -151,7 +151,7 @@
   },
   "home": {
     "title": "مرحباً",
-    "description": "مشروع أساسي حديث: shadcn-vue + Vue Query + axios + Pinia",
+    "description": "مشروع أساسي حديث ثث: shadcn-vue + Vue Query + axios + Pinia",
     "loggedInAs": "مسجل الدخول: {name} ({email})",
     "openDemo": "فتح تجربة CRUD الكاملة"
   }
