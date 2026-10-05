@@ -1,0 +1,111 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches: [master, main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-cpanel
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      APP_DIR: /home/${{ secrets.CPANEL_USER }}/public_html/dashboard.perfermo.com
+      NODE_VER: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VER }}
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        env:
+          VITE_BASE_API_URL: ${{ secrets.VITE_BASE_API_URL }}
+        run: |
+          yarn build
+          cp .htaccess dist/.htaccess
+
+      - name: Setup SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_PORT: ${{ secrets.SSH_PORT || 22 }}
+          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "$SSH_PORT" -H "$CPANEL_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Upload dist to cPanel (rsync)
+        env:
+          SSH_PORT: ${{ secrets.SSH_PORT || 22 }}
+          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+          CPANEL_USER: ${{ secrets.CPANEL_USER }}
+        run: |
+          set -e
+          SSH_CMD="ssh -p $SSH_PORT -i ~/.ssh/deploy_key"
+          echo "Deploying to $APP_DIR on $CPANEL_HOST"
+          $SSH_CMD "$CPANEL_USER@$CPANEL_HOST" "mkdir -p '$APP_DIR'"
+          # .well-known and cgi-bin are managed by cPanel (AutoSSL, etc.) and must survive --delete
+          rsync -az --delete \
+            --exclude='.well-known' \
+            --exclude='cgi-bin' \
+            -e "$SSH_CMD" \
+            dist/ "$CPANEL_USER@$CPANEL_HOST:$APP_DIR/"
+
+      # - name: Send success email notification
+      #   if: success()
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: ${{ secrets.MAIL_SERVER }}
+      #     server_port: ${{ secrets.MAIL_PORT }}
+      #     username: ${{ secrets.MAIL_USERNAME }}
+      #     password: ${{ secrets.MAIL_PASSWORD }}
+      #     subject: "✅ Deployment Successful - Base Structure Dashboard"
+      #     to: ${{ secrets.NOTIFICATION_EMAILS }}
+      #     from: ${{ secrets.MAIL_FROM }}
+      #     body: |
+      #       Deployment to cPanel completed successfully!
+
+      #       Repository: ${{ github.repository }}
+      #       Branch: ${{ github.ref_name }}
+      #       Commit: ${{ github.sha }}
+      #       Commit Message: ${{ github.event.head_commit.message }}
+      #       Author: ${{ github.actor }}
+      #       Workflow: ${{ github.workflow }}
+
+      #       View workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      # - name: Send failure email notification
+      #   if: failure()
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: ${{ secrets.MAIL_SERVER }}
+      #     server_port: ${{ secrets.MAIL_PORT }}
+      #     username: ${{ secrets.MAIL_USERNAME }}
+      #     password: ${{ secrets.MAIL_PASSWORD }}
+      #     subject: "❌ Deployment Failed - Base Structure Dashboard"
+      #     to: ${{ secrets.NOTIFICATION_EMAILS }}
+      #     from: ${{ secrets.MAIL_FROM }}
+      #     body: |
+      #       ⚠️ Deployment to cPanel has failed!
+
+      #       Repository: ${{ github.repository }}
+      #       Branch: ${{ github.ref_name }}
+      #       Commit: ${{ github.sha }}
+      #       Commit Message: ${{ github.event.head_commit.message }}
+      #       Author: ${{ github.actor }}
+      #       Workflow: ${{ github.workflow }}
+
+      #       Please check the workflow logs for more details:
+      #       ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

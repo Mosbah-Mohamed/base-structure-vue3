@@ -1,0 +1,7 @@
+{
+  "i18n-ally.localesPaths": [
+    "src/plugins/i18n",
+    "src/plugins/i18n/locales",
+    "src/plugins/vee-validate/messages"
+  ]
+}
