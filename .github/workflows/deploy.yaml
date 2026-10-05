@@ -32,6 +32,10 @@ jobs:
         env:
           VITE_BASE_API_URL: ${{ secrets.VITE_BASE_API_URL }}
         run: |
+          if [ -z "$VITE_BASE_API_URL" ]; then
+            echo "::error::VITE_BASE_API_URL secret is not set. Add it in Settings > Secrets and variables > Actions."
+            exit 1
+          fi
           yarn build
           cp .htaccess dist/.htaccess
 
